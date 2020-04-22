@@ -11,14 +11,15 @@ When benchmarks finish, you'll find results in this directory.
 
 ## Run on "bare metal"
 
-Install prerequisites:
+- Install prerequisites: *See Dockerfile*
 
-(TODO)
+- Run `run_benchmarks.sh` script. When benchmarks finish, you'll find results in this directory.
 
 
-Run `run_benchmarks.sh` script. When benchmarks finish, you'll find results in this directory.
+## Latest results
+
+![QFT](/benchmark_qft.png)
 
 
 That's it.
 Enjoy! :)
-
