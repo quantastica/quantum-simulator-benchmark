@@ -1,3 +1,11 @@
+# Common
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import math
+import time
+import gc
+
 # Qiskit
 from qiskit import QuantumRegister, ClassicalRegister
 from qiskit import QuantumCircuit, execute, Aer
@@ -7,19 +15,9 @@ from quantastica.qiskit_toaster import ToasterBackend
 from pyquil import Program, get_qc
 from pyquil.gates import H, CPHASE, SWAP, MEASURE
 
-# TFQ
-import tensorflow_quantum as tfq
+# Cirq and TFQ
+#import tensorflow_quantum as tfq
 import cirq
-
-# Common
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import math
-import time
-import gc
-
-# %matplotlib inline
 
 
 def qft_qiskit(n):
@@ -207,4 +205,4 @@ def benchmark_qft(from_qubits, to_qubits):
     plt.savefig("benchmark_qft.png")
 
 
-benchmark_qft(1, 20)
+benchmark_qft(1, 25)

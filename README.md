@@ -1,4 +1,24 @@
 # Quantum Simulator Benchmark
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/quantastica/quantum-simulator-benchmark/blob/master/benchmark_qft.ipynb])
+## Run inside Docker
+
+- Build docker image: `./docker_build.sh`
+
+- Run docker container: `./docker_run.sh`
+
+When benchmarks finish, you'll find results in this directory.
+
+
+## Run on "bare metal"
+
+Install prerequisites:
+
+(TODO)
+
+
+Run `run_benchmarks.sh` script. When benchmarks finish, you'll find results in this directory.
+
+
+That's it.
+Enjoy! :)
 
