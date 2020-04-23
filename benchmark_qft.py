@@ -96,7 +96,7 @@ def benchmark_qft_qiskit(from_qubits, to_qubits, results):
             job = execute(circ, backend=toaster_backend, shots=1)
             result = job.result()
             elapsed_time = (time.time() - start_time) * 1000
-            toaster_time = elapsed_time if np.isnan(toaster_time) else ((toaster_time + elapsed_time) / 2)
+            toaster_time = elapsed_time if np.isnan(toaster_time) else min(toaster_time, elapsed_time)
         results["Qiskit-Toaster"][i] = toaster_time
 
         # Qiskit with Aer backend
@@ -107,7 +107,7 @@ def benchmark_qft_qiskit(from_qubits, to_qubits, results):
             job = execute(circ, backend=aer_backend, shots=1)
             result = job.result()
             elapsed_time = (time.time() - start_time) * 1000
-            aer_time = elapsed_time if np.isnan(aer_time) else ((aer_time + elapsed_time) / 2)
+            aer_time = elapsed_time if np.isnan(aer_time) else min(aer_time, elapsed_time)
         results["Qiskit-Aer"][i] = aer_time
 
     gc.enable()
@@ -135,7 +135,7 @@ def benchmark_qft_pyquil(from_qubits, to_qubits, results):
             start_time = time.time()
             result = qc.run(circ)        
             elapsed_time = (time.time() - start_time) * 1000
-            qvm_time = elapsed_time if np.isnan(qvm_time) else ((qvm_time + elapsed_time) / 2)
+            qvm_time = elapsed_time if np.isnan(qvm_time) else min(qvm_time, elapsed_time)
         results["pyQuil-QVM"][i] = qvm_time
 
     gc.enable()
@@ -162,7 +162,7 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
             start_time = time.time()
             result = simulator.run(circ, repetitions=1)
             elapsed_time = (time.time() - start_time) * 1000
-            cirq_time = elapsed_time if np.isnan(cirq_time) else ((cirq_time + elapsed_time) / 2)
+            cirq_time = elapsed_time if np.isnan(cirq_time) else min(cirq_time, elapsed_time)
         results["Cirq-Simulator"][i] = cirq_time
 
         """
