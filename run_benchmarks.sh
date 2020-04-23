@@ -6,4 +6,4 @@ qubit-toaster -S & # > /dev/null 2>&1 &
 
 sleep 1s
 
-python /root/benchmark_qft.py
+python3 ./benchmark_qft.py

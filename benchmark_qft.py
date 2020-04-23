@@ -202,7 +202,7 @@ def benchmark_qft(from_qubits, to_qubits):
     plt.plot(results)
     plt.grid(which='both')
     plt.legend(loc="upper left", labels=results.columns)
-    plt.savefig("benchmark_qft.png")
+    plt.savefig("output/benchmark_qft.png")
 
 
-benchmark_qft(1, 25)
+benchmark_qft(1, 27)

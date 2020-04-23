@@ -18,7 +18,7 @@ When benchmarks finish, you'll find results in this directory.
 
 ## Latest results
 
-![QFT](/benchmark_qft.png)
+![QFT](/output/benchmark_qft.png)
 
 
 That's it.
