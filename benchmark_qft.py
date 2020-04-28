@@ -85,7 +85,7 @@ def benchmark_qft_qiskit(from_qubits, to_qubits, results):
     for i in range(from_qubits, to_qubits + 1):
         circ = qft_qiskit(i)
 
-        # Repeat multiple times for small number of qubits and get average time
+        # Repeat multiple times for small number of qubits and get best time
         repeat = 4 if i <= 20 else 1
 
         # Qiskit with Toaster backend
@@ -123,7 +123,7 @@ def benchmark_qft_pyquil(from_qubits, to_qubits, results):
         circ = qft_pyquil(i)
         circ.wrap_in_numshots_loop(1)
 
-        # Repeat multiple times for small number of qubits and get average time
+        # Repeat multiple times for small number of qubits and get best time
         repeat = 4 if i <= 20 else 1
 
         # pyQuil with QVM backend
@@ -152,7 +152,7 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
 
         circ = qft_cirq(i)
 
-        # Repeat multiple times for small number of qubits and get average time
+        # Repeat multiple times for small number of qubits and get best time
         repeat = 4 if i <= 20 else 1
 
         # Cirq simulator
@@ -173,7 +173,7 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
             start_time = time.time()
             result = tfq.layers.Sample()(circ, repetitions=1)
             elapsed_time = (time.time() - start_time) * 1000
-            tfq_time = elapsed_time if np.isnan(tfq_time) else ((tfq_time + elapsed_time) / 2)
+            tfq_time = elapsed_time if np.isnan(tfq_time) else min(tfq_time, elapsed_time)
         results["TFQ"][i] = tfq_time
         """
     gc.enable()

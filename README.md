@@ -13,7 +13,7 @@ When benchmarks finish, you'll find results in this directory.
 
 - Install prerequisites: *See Dockerfile*
 
-- Run `run_benchmarks.sh` script. When benchmarks finish, you'll find results in this directory.
+- Run `run_benchmarks.sh` script. When benchmarks finish, you'll find results in `output/` directory.
 
 
 ## Latest results

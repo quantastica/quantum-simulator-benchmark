@@ -1,8 +1,8 @@
 #!/bin/bash
 
-quilc -S & # > /dev/null 2>&1 &
-qvm -c -O 3 -S & # > /dev/null 2>&1 &
-qubit-toaster -S & # > /dev/null 2>&1 &
+quilc -S &
+qvm -c -O 3 -S &
+qubit-toaster -S &
 
 sleep 1s
 
