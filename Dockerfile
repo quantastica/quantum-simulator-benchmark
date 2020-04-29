@@ -9,8 +9,18 @@ RUN apt-get install -y \
 	python3-pip \
 	libzmq3-dev \
 	wget \
-	curl
+	curl \
+	git
 
+###
+# Newer cmake
+###
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.17.2/cmake-3.17.2-Linux-x86_64.sh -O ~/cmake-3.17.2-Linux-x86_64.sh
+RUN chmod +x ~/cmake-3.17.2-Linux-x86_64.sh
+RUN yes | ~/cmake-3.17.2-Linux-x86_64.sh --skip-license --prefix=/opt --include-subdir
+RUN ln -s /opt/cmake-3.17.2-Linux-x86_64/bin/* /usr/bin
+RUN cmake --version
 
 ###
 # python and pip
