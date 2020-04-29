@@ -56,15 +56,31 @@ RUN qubit-toaster -v
 
 
 ###
-# Install Cirq and TensorFlow Quantum
+# Install Cirq and qsim
 ###
 
-RUN pip install cirq==0.7.0
+RUN pip install cirq
+RUN pip install qsimcirq
+
+
+###
+# Make output dir
+###
 
 RUN mkdir /root/output/
 
+
+###
+# Copy benchmark scripts
+###
+
 COPY ./benchmark_qft.py /root/benchmark_qft.py
 COPY ./run_benchmarks.sh /root/run_benchmarks.sh
+
+
+###
+# Run benchmarks
+###
 
 WORKDIR "/root/"
 ENTRYPOINT ["/bin/bash", "/root/run_benchmarks.sh"]

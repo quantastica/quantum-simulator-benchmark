@@ -18,6 +18,8 @@ from pyquil.gates import H, CPHASE, SWAP, MEASURE
 # Cirq
 import cirq
 
+# qsim
+from qsimcirq import qsim
 
 def qft_qiskit(n):
     qc = QuantumCircuit()
@@ -70,6 +72,27 @@ def qft_cirq(n):
     circ = cirq.Circuit(gates)
 
     return circ
+
+
+def qft_qsim(n):
+
+    qsim_c = str(n) + "\n"
+
+    t = 0
+    for j in range(n):
+        for k in range(j):
+            qsim_c += str(t) + " cp " + str(j) + " " + str(k) + " " + str(math.pi/float(2**(j-k))) + "\n"
+            t += 1
+        qsim_c += str(t) + " h " + str(j) + "\n"
+        t += 1
+
+    # No measurement gate...
+    # for i in range(n):
+    #     qsim_c += str(t) + " m " + str(i) + "\n"
+        
+    qsim_c += "\n"
+
+    return qsim_c
 
 
 def benchmark_qft_qiskit(from_qubits, to_qubits, results):
@@ -143,7 +166,7 @@ def benchmark_qft_pyquil(from_qubits, to_qubits, results):
 def benchmark_qft_cirq(from_qubits, to_qubits, results):
     gc.disable()
 
-    results["Cirq-Simulator"] = np.nan
+    results["Cirq"] = np.nan
 
     for i in range(from_qubits, to_qubits + 1):
         simulator = cirq.Simulator()
@@ -161,7 +184,38 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
             result = simulator.run(circ, repetitions=1)
             elapsed_time = (time.time() - start_time) * 1000
             cirq_time = elapsed_time if np.isnan(cirq_time) else min(cirq_time, elapsed_time)
-        results["Cirq-Simulator"][i] = cirq_time
+        results["Cirq"][i] = cirq_time
+
+    gc.enable()
+
+
+def benchmark_qft_qsim(from_qubits, to_qubits, results):
+    gc.disable()
+
+    results["qsim"] = np.nan
+
+    for i in range(from_qubits, to_qubits + 1):
+        simulator = cirq.Simulator()
+
+        circ = qft_qsim(i)
+        qsim_options = {
+            "c": circ,
+            "i": "",
+            "t": 1,
+            "v": 0
+        }
+
+        # Repeat multiple times for small number of qubits and get best time
+        repeat = 4 if i <= 20 else 1
+
+        qsim_time = np.nan
+        for r in range(repeat):
+            gc.collect()
+            start_time = time.time()
+            result = qsim.qsim_simulate(qsim_options)
+            elapsed_time = (time.time() - start_time) * 1000
+            qsim_time = elapsed_time if np.isnan(qsim_time) else min(qsim_time, elapsed_time)
+        results["qsim"][i] = qsim_time
 
     gc.enable()
 
@@ -177,6 +231,9 @@ def benchmark_qft(from_qubits, to_qubits):
 
     # Cirq
     benchmark_qft_cirq(from_qubits, to_qubits, results)
+
+    # qsim
+    benchmark_qft_qsim(from_qubits, to_qubits, results)
 
     print(results)
 
