@@ -75,7 +75,6 @@ def qft_cirq(n):
 
 
 def qft_qsim(n):
-
     qsim_c = str(n) + "\n"
 
     t = 0
@@ -195,9 +194,9 @@ def benchmark_qft_qsim(from_qubits, to_qubits, results):
     results["qsim"] = np.nan
 
     for i in range(from_qubits, to_qubits + 1):
-        simulator = cirq.Simulator()
 
         circ = qft_qsim(i)
+
         qsim_options = {
             "c": circ,
             "i": "",
