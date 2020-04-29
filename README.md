@@ -6,7 +6,7 @@
 
 - Run docker container: `./docker_run.sh`
 
-When benchmarks finish, you'll find results in in `output/` directory.
+When benchmarks finish, you'll find results in `output/` directory.
 
 
 ## Run on "bare metal"
@@ -18,7 +18,7 @@ When benchmarks finish, you'll find results in in `output/` directory.
 
 ## Latest results
 
-![QFT](/output/benchmark_qft.png)
+![QFT](/media/benchmark_qft.png)
 
 
 That's it.

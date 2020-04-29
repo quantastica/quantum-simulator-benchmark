@@ -59,9 +59,7 @@ RUN qubit-toaster -v
 # Install Cirq and TensorFlow Quantum
 ###
 
-#RUN pip install tensorflow==2.1.0
 RUN pip install cirq==0.7.0
-#RUN pip install tensorflow-quantum
 
 RUN mkdir /root/output/
 

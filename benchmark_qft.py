@@ -15,8 +15,7 @@ from quantastica.qiskit_toaster import ToasterBackend
 from pyquil import Program, get_qc
 from pyquil.gates import H, CPHASE, SWAP, MEASURE
 
-# Cirq and TFQ
-#import tensorflow_quantum as tfq
+# Cirq
 import cirq
 
 
@@ -145,7 +144,6 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
     gc.disable()
 
     results["Cirq-Simulator"] = np.nan
-    #results["TFQ"] = np.nan
 
     for i in range(from_qubits, to_qubits + 1):
         simulator = cirq.Simulator()
@@ -165,17 +163,6 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
             cirq_time = elapsed_time if np.isnan(cirq_time) else min(cirq_time, elapsed_time)
         results["Cirq-Simulator"][i] = cirq_time
 
-        """
-        # TFQ simulator
-        tfq_time = np.nan
-        for r in range(repeat):
-            gc.collect()
-            start_time = time.time()
-            result = tfq.layers.Sample()(circ, repetitions=1)
-            elapsed_time = (time.time() - start_time) * 1000
-            tfq_time = elapsed_time if np.isnan(tfq_time) else min(tfq_time, elapsed_time)
-        results["TFQ"][i] = tfq_time
-        """
     gc.enable()
 
 
