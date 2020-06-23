@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt
 import math
 import time
 import gc
+import requests
 
 # Qiskit
+from qiskit import __qiskit_version__ as qiskit_version
 from qiskit import QuantumRegister, ClassicalRegister
 from qiskit import QuantumCircuit, execute, Aer
 from quantastica.qiskit_toaster import ToasterBackend
@@ -20,6 +22,7 @@ import cirq
 
 # qsim
 from qsimcirq import qsim
+
 
 def qft_qiskit(n):
     qc = QuantumCircuit()
@@ -97,11 +100,19 @@ def qft_qsim(n):
 def benchmark_qft_qiskit(from_qubits, to_qubits, results):
     gc.disable()
 
-    results["Qiskit-Aer"] = np.nan
-    results["Qiskit-Toaster"] = np.nan
+    # Toaster results column name
+    r = requests.get(url="http://127.0.0.1:8001/info")
+    toaster_version = r.json()["version"]
+    col_qiskit_toaster = "Qiskit+Toaster " + toaster_version
+    results[col_qiskit_toaster] = np.nan
 
-    aer_backend = Aer.get_backend('qasm_simulator')
-    toaster_backend = ToasterBackend.get_backend('qasm_simulator')
+    # Aer results column name
+    col_qiskit_aer = "Qiskit+Aer " + qiskit_version["qiskit-aer"]
+    results[col_qiskit_aer] = np.nan
+
+    # Get backends
+    aer_backend = Aer.get_backend("qasm_simulator")
+    toaster_backend = ToasterBackend.get_backend("qasm_simulator")
 
     for i in range(from_qubits, to_qubits + 1):
         circ = qft_qiskit(i)
@@ -118,7 +129,7 @@ def benchmark_qft_qiskit(from_qubits, to_qubits, results):
             result = job.result()
             elapsed_time = (time.time() - start_time) * 1000
             toaster_time = elapsed_time if np.isnan(toaster_time) else min(toaster_time, elapsed_time)
-        results["Qiskit-Toaster"][i] = toaster_time
+        results[col_qiskit_toaster][i] = toaster_time
 
         # Qiskit with Aer backend
         aer_time = np.nan
@@ -129,7 +140,8 @@ def benchmark_qft_qiskit(from_qubits, to_qubits, results):
             result = job.result()
             elapsed_time = (time.time() - start_time) * 1000
             aer_time = elapsed_time if np.isnan(aer_time) else min(aer_time, elapsed_time)
-        results["Qiskit-Aer"][i] = aer_time
+        results[col_qiskit_aer][i] = aer_time
+
 
     gc.enable()
 
@@ -137,7 +149,11 @@ def benchmark_qft_qiskit(from_qubits, to_qubits, results):
 def benchmark_qft_pyquil(from_qubits, to_qubits, results):
     gc.disable()
 
-    results["pyQuil-QVM"] = np.nan
+    # QVM results column name
+    r = requests.post(url="http://127.0.0.1:5000", json={ "type": "version" })
+    qvm_version = r.text
+    col_pyquil_qvm = "pyQuil+QVM " + qvm_version
+    results[col_pyquil_qvm] = np.nan
 
     for i in range(from_qubits, to_qubits + 1):
 
@@ -157,7 +173,7 @@ def benchmark_qft_pyquil(from_qubits, to_qubits, results):
             result = qc.run(circ)        
             elapsed_time = (time.time() - start_time) * 1000
             qvm_time = elapsed_time if np.isnan(qvm_time) else min(qvm_time, elapsed_time)
-        results["pyQuil-QVM"][i] = qvm_time
+        results[col_pyquil_qvm][i] = qvm_time
 
     gc.enable()
 
@@ -165,7 +181,8 @@ def benchmark_qft_pyquil(from_qubits, to_qubits, results):
 def benchmark_qft_cirq(from_qubits, to_qubits, results):
     gc.disable()
 
-    results["Cirq"] = np.nan
+    col_cirq = "Cirq " + cirq.__version__
+    results[col_cirq] = np.nan
 
     for i in range(from_qubits, to_qubits + 1):
         simulator = cirq.Simulator()
@@ -183,7 +200,7 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
             result = simulator.run(circ, repetitions=1)
             elapsed_time = (time.time() - start_time) * 1000
             cirq_time = elapsed_time if np.isnan(cirq_time) else min(cirq_time, elapsed_time)
-        results["Cirq"][i] = cirq_time
+        results[col_cirq][i] = cirq_time
 
     gc.enable()
 
@@ -191,7 +208,8 @@ def benchmark_qft_cirq(from_qubits, to_qubits, results):
 def benchmark_qft_qsim(from_qubits, to_qubits, results):
     gc.disable()
 
-    results["qsim"] = np.nan
+    col_qsim = "qsim"
+    results[col_qsim] = np.nan
 
     for i in range(from_qubits, to_qubits + 1):
 
@@ -214,7 +232,7 @@ def benchmark_qft_qsim(from_qubits, to_qubits, results):
             result = qsim.qsim_simulate(qsim_options)
             elapsed_time = (time.time() - start_time) * 1000
             qsim_time = elapsed_time if np.isnan(qsim_time) else min(qsim_time, elapsed_time)
-        results["qsim"][i] = qsim_time
+        results[col_qsim][i] = qsim_time
 
     gc.enable()
 
