@@ -46,9 +46,11 @@ RUN pip install qiskit
 ###
 
 RUN pip install pyquil
-RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-2.19.0-linux-deb.tar.bz2 -O ~/forest-sdk-2.19.0-linux-deb.tar.bz2
-RUN tar -xjvf ~/forest-sdk-2.19.0-linux-deb.tar.bz2 -C ~/
-RUN yes | ~/forest-sdk-2.19.0-linux-deb/forest-sdk-2.19.0-linux-deb.run
+
+RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-2.22.0-linux-deb.tar.bz2 -O ~/forest-sdk-2.22.0-linux-deb.tar.bz2
+RUN tar -xjvf ~/forest-sdk-2.22.0-linux-deb.tar.bz2 -C ~/
+RUN yes | ~/forest-sdk-2.22.0-linux-deb/forest-sdk-2.22.0-linux-deb.run
+
 
 RUN quilc -v
 RUN qvm -v

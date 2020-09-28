@@ -250,7 +250,7 @@ def benchmark_qft(from_qubits, to_qubits):
     benchmark_qft_cirq(from_qubits, to_qubits, results)
 
     # qsim
-    benchmark_qft_qsim(from_qubits, to_qubits, results)
+#    benchmark_qft_qsim(from_qubits, to_qubits, results)
 
     print(results)
 
